@@ -18,7 +18,7 @@ Currently, the following kinds of potentials are generated:
 
 Example potentials from the four standard potential methods:
 
-![Cheshire examples](https://github.com/jmcelve2/cheshire/imgs/cheshire_example.png)
+![Cheshire examples](https://raw.github.com/jmcelve2/cheshire/master/imgs/cheshire_example.png)
 
 ### How to install Cheshire
 
