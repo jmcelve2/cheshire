@@ -97,13 +97,13 @@ class PotentialFactory:
         self.x_max = x_max
         self.y_min = y_min
         self.y_max = y_max
-        self.x = np.tile(np.linspace(start = x_min, 
-                                     stop = x_max, 
-                                     num = n_x), 
+        self.x = np.tile(np.linspace(start=x_min,
+                                     stop=x_max,
+                                     num=n_x),
                          (n_y, 1))
-        self.y = -np.transpose(np.tile(np.linspace(start = y_min, 
-                                                   stop = y_max, 
-                                                   num = n_y), 
+        self.y = -np.transpose(np.tile(np.linspace(start=y_min,
+                                                   stop=y_max,
+                                                   num=n_y),
                                        (n_x, 1)))
         self.d = abs(self.x[0][0]-self.x[0][1])
         

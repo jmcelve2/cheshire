@@ -18,7 +18,7 @@ def schrodinger(potential, k=1):
         **potential (Potential)**: An object of class Potential containing
             an array of potential energy values and distance information.
         **k (int)**: The number of eigenvalues and eigenvectors to return
-            from the diagonalization process.
+            from the diagonalization process. Default is 1.
 
     Yields:
         **E (numpy.array)**: An array of energy eigenvalues.
@@ -45,7 +45,7 @@ def schrodinger(potential, k=1):
         + 1*np.diag(a_xy, k=-n_y) \
         + 1*np.diag(a_xy, k=n_y)
         
-    dx2 = dx2/(d**2)
+    dx2 = dx2 / d**2
     
     dy22 = -2*np.diag(np.ones((1, n_y))[0]) \
         + 1*np.diag(np.ones((1, n_y-1))[0], -1) \
@@ -53,13 +53,18 @@ def schrodinger(potential, k=1):
         
     dy2 = np.kron(np.eye(n_x), dy22)
     
-    dy2 = dy2/(d**2)
+    dy2 = dy2 / d**2
     
     hamiltonian = (-hbar**2/(2*me*Mass)) * (dx2 + dy2) + \
         np.diag(v.flatten())*e
     
     energy, psi = eigs(hamiltonian, k=k, which='SM')
 
+    # Drop the imaginary component (which is always 0)
     energy = np.real(energy)
+
+    # Reformat the eigenstates so that they are returned in the shape of the potential
+    psi = np.array([np.transpose(psi[:, i]).flatten().reshape((n_x, n_y))
+                    for i in range(psi.shape[1])])
 
     return energy, psi
