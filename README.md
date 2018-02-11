@@ -16,6 +16,10 @@ Currently, the following kinds of potentials are generated:
 * Random
 * Coulomb (experimental)
 
+Example potentials from the four standard potential methods:
+
+![Cheshire examples](https://github.com/jmcelve2/cheshire/imgs/cheshire_example.png)
+
 ### How to install Cheshire
 
 To install, pull the repo and execute the following:
