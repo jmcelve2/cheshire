@@ -7,7 +7,7 @@ The Cheshire Cat: That depends a good deal on where you want to get to.
 
 ### What Cheshire does
 
-This package contains functionality for generating homogeneous 2D quantum potentials and numerically solving the Schrodinger equation. The potentials are generated using the methodology outlined in[this paper.](https://arxiv.org/pdf/1702.01361.pdf)
+This package contains functionality for generating homogeneous 2D quantum potentials and numerically solving the Schrodinger equation. The potentials are generated using the methodology outlined in [this paper.](https://arxiv.org/pdf/1702.01361.pdf)
 
 Currently, the following kinds of potentials are generated:
 * Infinite square well
@@ -42,7 +42,6 @@ Next, initialize objects of the `PotentialFactory` and `ParamSampler` classes.
 ```
 factory = PotentialFactory()
 sampler = ParamSampler()
-
 ```
 The `PotentialFactory` class generates objects of the class `Potential`. `Potential` objects have two attributes: `potential`, the grid of potential energy values, and `dist`, the distance between grid points.
 
