@@ -57,9 +57,11 @@ class ParamSampler:
         self.y_min = y_min
         self.y_max = y_max
 
+    # Rescale parameters by the physical size of the grid
     def rescale_by_size(self, val, size=20):
         return val*self.x_max/size
 
+    # Rescale parameters by the number of points on the grid
     def rescale_by_grid(self, val, grid=256):
         return val*self.n_x/grid
     
@@ -91,7 +93,7 @@ class ParamSampler:
         min_c = self.rescale_by_size(min_c)
         max_c = self.rescale_by_size(max_c)
 
-        # Sample parameters
+        # Sample parameters. Sampling from the energy first ensures that the desired energy range is obtained
         def iw_sample():
             
             energy = np.random.uniform(low=0, high=0.4)
@@ -286,7 +288,7 @@ class ParamSampler:
     
     def rand(self, min_k=2, max_k=7, min_r=80, max_r=180, 
              min_sig1=6, max_sig1=10, min_sig2=10, max_sig2=16, 
-             p_range=[1, 2]):
+             p_range=[0.5, 1.0, 1.5, 2.0]):
         """
         Random parameter method that generates parameters for random 
         potentials.
@@ -322,7 +324,7 @@ class ParamSampler:
         assert min_sig1 > 0
         assert min_sig2 <= max_sig2
         assert min_sig2 > 0
-        assert all([isinstance(i, int) for i in p_range])
+        assert all([isinstance(i, float) for i in p_range])
 
         # Rescale arguments
         min_r = self.rescale_by_grid(min_r)
@@ -337,7 +339,7 @@ class ParamSampler:
         r = np.random.uniform(low=min_r, high=max_r)
         sig1 = np.random.uniform(low=min_sig1, high=max_sig1)
         sig2 = np.random.uniform(low=min_sig2, high=max_sig2)
-        p = int(np.random.choice(p_range))
+        p = np.random.choice(p_range)
         
         return {'k': k, 'r': r, 'sig1': sig1, 'sig2': sig2, 'p': p}
     

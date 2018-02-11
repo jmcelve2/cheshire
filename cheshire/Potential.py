@@ -262,7 +262,7 @@ class PotentialFactory:
         assert (r < self.n_x) & (r > 0)
         assert sig1 > 0
         assert sig2 > 0
-        assert isinstance(p, int)
+        assert isinstance(p, float)
         assert p > 0
 
         # Create the n x n and n/2 x n/2 grids

@@ -54,11 +54,13 @@ def schrodinger(potential, k=1):
     dy2 = np.kron(np.eye(n_x), dy22)
     
     dy2 = dy2 / d**2
+
+    # Create kinetic and potential energy operators and then assign the Hamiltonian
+    kin = (-hbar**2/(2*me*Mass)) * (dx2 + dy2)
+    pot = np.diag(v.flatten())*e
+    ham = kin + pot
     
-    hamiltonian = (-hbar**2/(2*me*Mass)) * (dx2 + dy2) + \
-        np.diag(v.flatten())*e
-    
-    energy, psi = eigs(hamiltonian, k=k, which='SM')
+    energy, psi = eigs(ham, k=k, which='SM')
 
     # Drop the imaginary component (which is always 0)
     energy = np.real(energy)

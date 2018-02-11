@@ -18,7 +18,7 @@ Currently, the following kinds of potentials are generated:
 
 Example potentials from the four standard potential methods:
 
-![Cheshire examples](https://raw.github.com/jmcelve2/cheshire/master/imgs/cheshire_example.png)
+![Cheshire examples](https://raw.github.com/jmcelve2/cheshire/master/examples/cheshire_example.png)
 
 ### How to install Cheshire
 
@@ -38,7 +38,6 @@ from cheshire.Schrodinger import schrodinger
 from cheshire.ParamSampler import ParamSampler
 from cheshire.Potential import PotentialFactory
 
-import numpy as np
 import seaborn as sns
 ```
 
@@ -53,10 +52,8 @@ The `PotentialFactory` class generates objects of the class `Potential`. `Potent
 Create the potential object using parameters generated from the sampler class. Each call of `sampler` generates new parameters.
 ```
 potential = factory.iw(**sampler.iw())
-
 sns.heatmap(potential.potential)
 ```
-
 
 Now solve the Schrodinger equation for this potential. Setting `k=1` returns a single eigenvalue and eigenvector. Internally, `scipy.sparse.linalg.eigs` is used and `which='SM'` is hardcoded to ensure that the eigenvalues and eigenvectors are returned and sorted from lowest to highest energy, e.g. if `k=1`, the ground state energy and state are returned, whereas if `k=2`, the both the ground state and first excited energies and states are returned.
 ```
@@ -66,5 +63,6 @@ E, psi = schrodinger(potential=potential, k=1)
 Finally, plot the probability density of the ground state solution to the Schrodinger equation.
 
 ```
+prob = abs(psi[0])**2
 sns.heatmap(abs(psi[0])**2)
 ```
