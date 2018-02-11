@@ -64,5 +64,5 @@ Finally, plot the probability density of the ground state solution to the Schrod
 
 ```
 prob = abs(psi[0])**2
-sns.heatmap(abs(psi[0])**2)
+sns.heatmap(prob)
 ```
