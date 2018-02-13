@@ -3,10 +3,86 @@ import math
 import numpy as np
 
 
-class ParamSampler:
+class ParamSampler1D:
+    """
+    The parameter sampler class used to create random parameters for
+    one-dimensional potentials.
+
+    Attributes:
+        **n_x (int)**: The number of grid points along the x axis. This number
+            must be a multiple of 2.
+        **x_min (float)**: The minimum physical distance (in a.u.) on the
+            potential grid along the x axis.
+        **x_max (float)**: The maximum physical distance (in a.u.) on the
+            potential grid along the x axis.
+
+    """
+
+    def __init__(self, n_x=128, x_min=-20, x_max=20):
+        """
+        Potential constructor.
+
+        Args:
+            **n_x (int)**: The number of grid points along the x axis. This number
+                must be a multiple of 2.
+            **x_min (float)**: The minimum physical distance (in a.u.) on the
+                potential grid along the x axis. Default is -20.
+            **x_max (float)**: The maximum physical distance (in a.u.) on the
+                potential grid along the x axis. Default is 20.
+        """
+
+        assert x_min <= x_max
+
+        self.n_x = n_x
+        self.x_min = x_min
+        self.x_max = x_max
+
+        # Rescale parameters by the physical size of the grid
+    def rescale_by_size(self, val, size=20):
+        return val*self.x_max/size
+
+        # Rescale parameters by the number of points on the grid
+    def rescale_by_grid(self, val, grid=256):
+        return val*self.n_x/grid
+
+    def iw(self, min_l=5, max_l=23, min_c=-8, max_c=8):
+        """
+        Random parameter method that generates parameters for infinite
+        square wells.
+
+        Args:
+            **min_l (float)**: The minimum possible allowed length for
+                the well size. Default is 5.
+            **max_l (float)**: The maximum possible allowed length for
+                the well size. Default is 23.
+            **min_c (float)**: The minimum possible center point for
+                the well. Default is -8.
+            **max_c (float)**: The maximum possible center point for
+                the well. Default is 8.
+
+        Returns:
+            A dictionary of randomly generated infinite well parameters.
+        """
+
+        assert min_l <= max_l
+        assert min_c <= max_c
+
+        # Rescale arguments based on the size of the grid
+        min_l = self.rescale_by_size(min_l)
+        max_l = self.rescale_by_size(max_l)
+        min_c = self.rescale_by_size(min_c)
+        max_c = self.rescale_by_size(max_c)
+
+        l_x = np.random.uniform(low=min_l*self.x_max/20, high=max_l*self.x_max/20)
+        c_x = np.random.uniform(low=min_c, high=max_c)
+
+        return {'l_x': l_x, 'c_x': c_x}
+
+
+class ParamSampler2D:
     """
     The parameter sampler class used to create random parameters for 
-    potentials.
+    two-dimensional potentials.
 
     Attributes:
         **n_x (int)**: The number of grid points along the x axis. This number
@@ -24,8 +100,8 @@ class ParamSampler:
 
     """    
 
-    def __init__(self, x_min=-20, x_max=20, y_min=-20, y_max=20,
-                 n_x=128, n_y=128):
+    def __init__(self, n_x=128, n_y=128,
+                 x_min=-20, x_max=20, y_min=-20, y_max=20):
         """
         Potential constructor.
 
