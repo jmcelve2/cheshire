@@ -8,3 +8,5 @@ dependencies:
 - python=3.5.2=0
 - scipy=0.17.0=np111py35_0
 - setuptools
+- pip:
+  - sklearn=0.0

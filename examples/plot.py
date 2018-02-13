@@ -1,11 +1,11 @@
 
-from cheshire.ParamSampler import ParamSampler
-from cheshire.Potential import PotentialFactory
+from cheshire.ParamSampler import ParamSampler2D
+from cheshire.Potential import PotentialFactory2D
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-factory = PotentialFactory()
-sampler = ParamSampler()
+factory = PotentialFactory2D()
+sampler = ParamSampler2D()
 
 iw1 = factory.iw(**sampler.iw()).potential
 iw2 = factory.iw(**sampler.iw()).potential
@@ -25,7 +25,7 @@ rand3 = factory.rand(**sampler.rand()).potential
 
 fig, axes = plt.subplots(nrows=3, ncols=4, figsize=(12, 8))
 
-cols = ["Invinite Well", 
+cols = ["Infinite Well",
         "Simple Harmonic Oscillator", 
         "Double Inverted Gaussian", 
         "Random"]

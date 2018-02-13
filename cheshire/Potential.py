@@ -38,9 +38,82 @@ class Potential:
         self.dist = dist
 
 
-class PotentialFactory:
+class PotentialFactory1D:
     """
-    The potential factory class used to instantiate instances of potentials.
+    The potential factory class used to instantiate instances of one-
+    dimensional potentials.
+
+    Attributes:
+        **n_x (int)**: The number of grid points along the x axis. This number
+            must be a multiple of 2.
+        **x_min (float)**: The minimum physical distance (in a.u.) on the
+            potential grid along the x axis.
+        **x_max (float)**: The maximum physical distance (in a.u.) on the
+            potential grid along the x axis.
+        **x (numpy.array)**: A grid of distances (in a.u.) from the center
+            of the grid along the x axis.
+        **d (float)**: The distance (in a.u.) between neighboring grid points.
+    """
+
+    def __init__(self, n_x=128, x_min=-20, x_max=20):
+        """
+        Potential constructor.
+
+        Args:
+            **n_x (int)**: The number of grid points along the x axis. This number
+                must be a multiple of 2. Default is 128.
+            **n_y (int)**: The number of grid points along the y axis. This number
+                must be a multiple of 2. Default is 128.
+            **x_min (float)**: The minimum physical distance (in a.u.) on the
+                potential grid along the x axis. Default is -20.
+            **x_max (float)**: The maximum physical distance (in a.u.) on the
+                potential grid along the x axis. Default is 20.
+            **y_min (float)**: The minimum physical distance (in a.u.) on the
+                potential grid along the y axis. Default is -20.
+            **y_max (float)**: The maximum physical distance (in a.u.) on the
+                potential grid along the y axis. Default is 20.
+        """
+
+        if not ((n_x & (n_x - 1)) == 0) and n_x != 0:
+            raise AssertionError('n_x must be must be an integer power of 2.')
+        assert x_min < x_max
+
+        self.n_x = n_x
+        self.x_min = x_min
+        self.x_max = x_max
+        self.x = np.linspace(start=x_min, stop=x_max, num=n_x)
+        self.d = abs(self.x[0]-self.x[1])
+
+    def iw(self, c_x=0, l_x=7):
+        """
+        Generate an approximate infinite well potential.
+
+        Args:
+            **c_x (float)**: The center of the infinite well along the x
+                axis (in a.u.). Default is 0.
+            **l_x (float)**: The length of the infinite well along the x
+                axis (in a.u.). Default is 7.
+
+        Returns:
+            A numpy.array grid of potential values with units of Hartree
+            energy.
+        """
+
+        assert self.x_min < c_x-0.5*l_x
+        assert c_x+0.5*l_x < self.x_max
+
+        v = np.zeros(shape=(1, self.n_x))[0]
+        mask = (c_x-0.5*l_x < self.x) & (self.x <= c_x+0.5*l_x)
+
+        v[~mask] = 100
+
+        return Potential(potential=v, dist=self.d)
+
+
+class PotentialFactory2D:
+    """
+    The potential factory class used to instantiate instances of two-
+    dimensional potentials.
 
     Attributes:
         **n_x (int)**: The number of grid points along the x axis. This number
@@ -132,8 +205,8 @@ class PotentialFactory:
         assert (l_y > self.y_min) & (l_y < self.y_max)
 
         v = np.zeros(shape=(self.n_y, self.n_x))
-        mask = (.5*(2*c_x-l_x) < self.x) & (self.x <= .5*(2*c_x+l_x)) & \
-            (.5*(2*c_y-l_y) < self.y) & (self.y <= .5*(2*c_y+l_y))
+        mask = (c_x-0.5*l_x < self.x) & (self.x <= c_x+0.5*l_x) & \
+            (c_y-0.5*l_y < self.y) & (self.y <= c_y+0.5*l_y)
             
         v[~mask] = 20
         
