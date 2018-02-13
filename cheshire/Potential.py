@@ -105,7 +105,7 @@ class PotentialFactory1D:
         v = np.zeros(shape=(1, self.n_x))[0]
         mask = (c_x-0.5*l_x < self.x) & (self.x <= c_x+0.5*l_x)
 
-        v[~mask] = 100
+        v[~mask] = 20
 
         return Potential(potential=v, dist=self.d)
 
