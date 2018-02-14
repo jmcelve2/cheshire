@@ -171,11 +171,10 @@ class ParamSampler2D:
 
         # Sample parameters. Sampling from the energy first ensures that the desired energy range is obtained
         def iw_sample():
-            
-            energy = np.random.uniform(low=0, high=0.4)
-            l_x = np.random.uniform(low=min_l*self.x_max/20, high=max_l*self.x_max/20)
-            l_y = 1 / np.sqrt((2*energy)/math.pi**2 - 1/l_x**2)
-            
+            if 2*energy/math.pi**2 <= 1/(l_x**2):
+                l_y = np.nan
+            else:
+                l_y = 1 / np.sqrt((2*energy)/(math.pi**2) - 1/(l_x**2))
             return l_x, l_y
         
         while True:
@@ -197,7 +196,7 @@ class ParamSampler2D:
         c_x = np.random.uniform(low=min_c, high=max_c)
         c_y = np.random.uniform(low=min_c, high=max_c)
         
-        return {'l_x': l_x, 'l_y': l_y, 'c_x': c_x, 'c_y': c_y}
+        return {'l_x': l_x, 'l_y': l_y, 'c_x': c_x, 'c_y': c_y, 'energy': energy}
     
     def sho(self, min_kx=0, max_kx=0.16, min_ky=0, max_ky=0.16, 
             min_cx=-8, max_cx=8, min_cy=-8, max_cy=8):

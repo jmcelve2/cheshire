@@ -41,10 +41,10 @@ class Schrodinger:
                 from the diagonalization process. Default is 1.
         """
         assert isinstance(potential.potential, np.ndarray)
-        if not hasattr(potential, 'dist'):
-            raise AssertionError('The potential must possess a field "d" ' +
-                                 'corresponding to the physical distance between ' +
-                                 'points on the potential grid.')
+        if not hasattr(potential, "dist"):
+            raise AssertionError("The potential must possess a field \"d\" " +
+                                 "corresponding to the physical distance between " +
+                                 "points on the potential grid.")
         assert potential.dist > 0
         assert isinstance(k, int)
         assert k >= 1
@@ -57,12 +57,16 @@ class Schrodinger:
         Solver method which conditionally implements Schrodinger solvers
         based on the dimensionality of the problem.
         """
+        if not len(self.potential.potential.shape) in [1, 2]:
+            AssertionError("The dimensionality of this potential does not have an " +
+                           "appropriate solver.")
+
         if len(self.potential.potential.shape) == 1:
             energy, psi = __schrodinger1d__(potential=self.potential, k=self.k)
-            return energy, psi
-        if len(self.potential.potential.shape) == 2:
+        else:
             energy, psi = __schrodinger2d__(potential=self.potential, k=self.k)
-            return energy, psi
+
+        return energy, psi
 
 
 def __schrodinger1d__(potential, k=1):
@@ -81,10 +85,11 @@ def __schrodinger1d__(potential, k=1):
     """
     assert isinstance(potential.potential, np.ndarray)
     assert len(potential.potential.shape) == 1
-    if not hasattr(potential, 'dist'):
-        raise AssertionError('The potential must possess a field "d" ' +
-                             'corresponding to the physical distance between ' +
-                             'points on the potential grid.')
+    if not hasattr(potential, "dist"):
+        error = "The potential must possess a field \"d\" " + \
+                "corresponding to the physical distance between " + \
+                "points on the potential grid."
+        raise AssertionError(error)
     assert potential.dist > 0
     assert isinstance(k, int)
     assert k >= 1
@@ -119,7 +124,16 @@ def __schrodinger1d__(potential, k=1):
     hamiltonian = np.kron(hamiltonian, np.eye(n_x)) + np.kron(np.eye(n_x), hamiltonian)
     hamiltonian = hamiltonian + v_ee
 
-    energy, psi = eigs(hamiltonian, k=k, which='SM')
+    # Using kp instead of the raw k for actual calculations ensures that the desired
+    # number of eigenstates is returned after filtering for only the antisymmetric
+    # states
+    kp = 2*k + 1
+    if kp > hamiltonian.shape[0] - 1:
+        error = "The desired value of k is forbidden because " + \
+                "of the size of the Hamiltonian."
+        AssertionError(error)
+
+    energy, psi = eigs(hamiltonian, k=kp, which="SM")
 
     # Drop the imaginary component (which is always 0)
     energy = np.real(energy)
@@ -127,6 +141,12 @@ def __schrodinger1d__(potential, k=1):
     # Reformat the eigenstates so that they are reformatted as x1 vs x2
     psi = np.array([np.transpose(psi[:, i]).flatten().reshape((n_x, n_x))
                     for i in range(psi.shape[1])])
+
+    # This filters out the states that are not antisymmetric under the exchange of x1 and x2
+    mask = np.array([all(np.isclose(psi[i][np.where(v == 0)[0]][:, np.where(v == 0)[0]],
+                                    -np.transpose(psi[i][np.where(v == 0)[0]][:, np.where(v == 0)[0]])).flatten())
+                     for i in range(len(psi))])
+    psi = psi[[mask]][:k]
 
     return energy, psi
 
@@ -147,10 +167,10 @@ def __schrodinger2d__(potential, k=1):
     """
     assert isinstance(potential.potential, np.ndarray)
     assert len(potential.potential.shape) == 2
-    if not hasattr(potential, 'dist'):
-        raise AssertionError('The potential must possess a field "d" ' +
-                             'corresponding to the physical distance between ' +
-                             'points on the potential grid.')
+    if not hasattr(potential, "dist"):
+        raise AssertionError("The potential must possess a field \"d\" " +
+                             "corresponding to the physical distance between " +
+                             "points on the potential grid.")
     assert potential.dist > 0
     assert isinstance(k, int)
     assert k >= 1
@@ -181,7 +201,7 @@ def __schrodinger2d__(potential, k=1):
     pot = np.diag(v.flatten())*e
     ham = kin + pot
 
-    energy, psi = eigs(ham, k=k, which='SM')
+    energy, psi = eigs(ham, k=k, which="SM")
 
     # Drop the imaginary component (which is always 0)
     energy = np.real(energy)

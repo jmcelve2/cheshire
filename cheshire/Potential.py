@@ -414,13 +414,15 @@ class PotentialFactory2D:
 
         return Potential(potential=v, dist=self.d)
     
-    def coulomb(self, z=1):
+    def coulomb(self, z=1, alpha=10**-9):
         """
         Generate a double inverted Gaussian potential.
 
         Args:
             **z (int)**: Determines the magnitude of the potential. An
                 effective "proton number" constant.
+            **alpha (float)**: A value that removes the Coulomb singularity
+                to ensure the solver converges.
 
         Returns:
             A numpy.array grid of potential values with units of Hartree 
@@ -430,7 +432,7 @@ class PotentialFactory2D:
         assert isinstance(z, int)
         assert z >= 1
         
-        v = z/np.sqrt(self.x**2+self.y**2)
+        v = z/np.sqrt(self.x**2+self.y**2+alpha**2)
         v = v.max()-v
 
         return Potential(potential=v, dist=self.d)

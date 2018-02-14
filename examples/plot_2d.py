@@ -51,4 +51,4 @@ sns.heatmap(rand3, ax=axes[2, 3], xticklabels=False, yticklabels=False, cbar=Fal
 
 plt.tight_layout()
 plt.show()
-plt.savefig(fname="example.png", dpi=300)
+plt.savefig(fname="potential_2d.png", dpi=300)
