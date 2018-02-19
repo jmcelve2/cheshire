@@ -1,64 +1,24 @@
 
 import math
 import numpy as np
+from cheshire.Grid import *
 
 
-class ParamSampler1D:
+class InfiniteWell1DSampler(Grid1D):
     """
-    The parameter sampler class used to create random parameters for
-    one-dimensional potentials.
-
-    Attributes:
-        **n_x (int)**: The number of grid points along the x axis. This number
-            must be a multiple of 2.
-        **x_min (float)**: The minimum physical distance (in a.u.) on the
-            potential grid along the x axis.
-        **x_max (float)**: The maximum physical distance (in a.u.) on the
-            potential grid along the x axis.
-
+    Class that generates parameters for the 1D infinite well.
     """
 
-    def __init__(self, n_x=128, x_min=-20, x_max=20):
-        """
-        Potential constructor.
-
-        Args:
-            **n_x (int)**: The number of grid points along the x axis. This number
-                must be a multiple of 2.
-            **x_min (float)**: The minimum physical distance (in a.u.) on the
-                potential grid along the x axis. Default is -20.
-            **x_max (float)**: The maximum physical distance (in a.u.) on the
-                potential grid along the x axis. Default is 20.
-        """
-
-        assert x_min <= x_max
-
-        self.n_x = n_x
-        self.x_min = x_min
-        self.x_max = x_max
-
-        # Rescale parameters by the physical size of the grid
-    def rescale_by_size(self, val, size=20):
-        return val*self.x_max/size
-
-        # Rescale parameters by the number of points on the grid
-    def rescale_by_grid(self, val, grid=256):
-        return val*self.n_x/grid
-
-    def iw(self, min_l=5, max_l=23, min_c=-8, max_c=8):
+    def sample_params(self, min_l=5, max_l=23, min_c=-8, max_c=8):
         """
         Random parameter method that generates parameters for infinite
         square wells.
 
         Args:
-            **min_l (float)**: The minimum possible allowed length for
-                the well size. Default is 5.
-            **max_l (float)**: The maximum possible allowed length for
-                the well size. Default is 23.
-            **min_c (float)**: The minimum possible center point for
-                the well. Default is -8.
-            **max_c (float)**: The maximum possible center point for
-                the well. Default is 8.
+            **min_l (float)**: The minimum possible allowed length for the well size. Default is 5.
+            **max_l (float)**: The maximum possible allowed length for the well size. Default is 23.
+            **min_c (float)**: The minimum possible center point for the well. Default is -8.
+            **max_c (float)**: The maximum possible center point for the well. Default is 8.
 
         Returns:
             A dictionary of randomly generated infinite well parameters.
@@ -76,90 +36,28 @@ class ParamSampler1D:
         l_x = np.random.uniform(low=min_l*self.x_max/20, high=max_l*self.x_max/20)
         c_x = np.random.uniform(low=min_c, high=max_c)
 
-        return {'l_x': l_x, 'c_x': c_x}
+        return dict(l_x=l_x, c_x=c_x)
 
 
-class ParamSampler2D:
+class InfiniteWell2DSampler(Grid2D):
     """
-    The parameter sampler class used to create random parameters for 
-    two-dimensional potentials.
+    Class that generates parameters for the 2D infinite well.
+    """
 
-    Attributes:
-        **n_x (int)**: The number of grid points along the x axis. This number
-            must be a multiple of 2.
-        **n_y (int)**: The number of grid points along the y axis. This number
-            must be a multiple of 2.
-        **x_min (float)**: The minimum physical distance (in a.u.) on the
-            potential grid along the x axis.
-        **x_max (float)**: The maximum physical distance (in a.u.) on the
-            potential grid along the x axis.
-        **y_min (float)**: The minimum physical distance (in a.u.) on the
-            potential grid along the y axis.
-        **y_max (float)**: The maximum physical distance (in a.u.) on the
-            potential grid along the y axis.
-
-    """    
-
-    def __init__(self, n_x=128, n_y=128,
-                 x_min=-20, x_max=20, y_min=-20, y_max=20):
+    def sample_params(self, min_l=4, max_l=15, min_c=-8, max_c=8):
         """
-        Potential constructor.
+        Random parameter method that generates parameters for 2D infinite square wells.
 
         Args:
-            **n_x (int)**: The number of grid points along the x axis. This number
-                must be a multiple of 2.
-            **n_y (int)**: The number of grid points along the y axis. This number
-                must be a multiple of 2.
-            **x_min (float)**: The minimum physical distance (in a.u.) on the
-                potential grid along the x axis. Default is -20.
-            **x_max (float)**: The maximum physical distance (in a.u.) on the
-                potential grid along the x axis. Default is 20.
-            **y_min (float)**: The minimum physical distance (in a.u.) on the
-                potential grid along the y axis. Default is -20.
-            **y_max (float)**: The maximum physical distance (in a.u.) on the
-                potential grid along the y axis. Default is 20.
-        """
-
-        assert x_min == y_min
-        assert x_max == y_max
-        assert x_min <= x_max
-        assert y_min <= y_max
-        assert n_x == n_y
-
-        self.n_x = n_x
-        self.n_y = n_y
-        self.x_min = x_min
-        self.x_max = x_max
-        self.y_min = y_min
-        self.y_max = y_max
-
-    # Rescale parameters by the physical size of the grid
-    def rescale_by_size(self, val, size=20):
-        return val*self.x_max/size
-
-    # Rescale parameters by the number of points on the grid
-    def rescale_by_grid(self, val, grid=256):
-        return val*self.n_x/grid
-    
-    def iw(self, min_l=4, max_l=15, min_c=-8, max_c=8):
-        """
-        Random parameter method that generates parameters for infinite
-        square wells.
-
-        Args:
-            **min_l (float)**: The minimum possible allowed length for 
-                the well size. Default is 4.
-            **max_l (float)**: The maximum possible allowed length for 
-                the well size. Default is 15.
-            **min_c (float)**: The minimum possible center point for 
-                the well. Default is -8.
-            **max_c (float)**: The maximum possible center point for 
-                the well. Default is 8.
+            **min_l (float)**: The minimum possible allowed length for the well size. Default is 4.
+            **max_l (float)**: The maximum possible allowed length for the well size. Default is 15.
+            **min_c (float)**: The minimum possible center point for the well. Default is -8.
+            **max_c (float)**: The maximum possible center point for the well. Default is 8.
 
         Returns:
             A dictionary of randomly generated infinite well parameters.
         """
-        
+
         assert min_l <= max_l
         assert min_c <= max_c
 
@@ -169,66 +67,72 @@ class ParamSampler2D:
         min_c = self.rescale_by_size(min_c)
         max_c = self.rescale_by_size(max_c)
 
-        # Sample parameters. Sampling from the energy first ensures that the desired energy range is obtained
-        def iw_sample():
-            if 2*energy/math.pi**2 <= 1/(l_x**2):
-                l_y = np.nan
-            else:
-                l_y = 1 / np.sqrt((2*energy)/(math.pi**2) - 1/(l_x**2))
-            return l_x, l_y
-        
         while True:
-            l_x, l_y = iw_sample()
+            l_x, l_y = self.__sample__(min_l=min_l, max_l=max_l)
             if (min_l <= l_x) & \
-                (l_x <= max_l) & \
-                (min_l <= l_y) & \
-                (l_y <= max_l):
+                    (l_x <= max_l) & \
+                    (min_l <= l_y) & \
+                    (l_y <= max_l):
                 break
-        
+
         switch = np.random.uniform(low=0, high=1)
         if switch > 0.5:
             temp = l_x
             l_x = l_y
             l_y = temp
-        
+
         l_x = l_x
         l_y = l_y
         c_x = np.random.uniform(low=min_c, high=max_c)
         c_y = np.random.uniform(low=min_c, high=max_c)
-        
-        return {'l_x': l_x, 'l_y': l_y, 'c_x': c_x, 'c_y': c_y, 'energy': energy}
-    
-    def sho(self, min_kx=0, max_kx=0.16, min_ky=0, max_ky=0.16, 
-            min_cx=-8, max_cx=8, min_cy=-8, max_cy=8):
+
+        return dict(l_x=l_x, l_y=l_y, c_x=c_x, c_y=c_y)
+
+    def __sample__(self, min_l, max_l):
         """
-        Random parameter method that generates parameters for simple
-        harmonic oscillator potentials.
+        Sample parameters. Sampling from the energy first ensures that the desired
+        energy range is obtained
+        """
+
+        energy = np.random.uniform(low=0, high=0.4)
+        l_x = np.random.uniform(low=min_l*self.x_max/20, high=max_l*self.x_max/20)
+
+        if 2*energy/math.pi**2 <= 1/(l_x**2):
+            l_y = np.nan
+        elif 2*energy/math.pi**2 <= 1/(l_x**2) > max_l:
+            l_y = np.nan
+        elif 2*energy/math.pi**2 <= 1/(l_x**2) < min_l:
+            l_y = np.nan
+        else:
+            l_y = 1 / np.sqrt((2*energy)/(math.pi**2) - 1/(l_x**2))
+        return l_x, l_y
+
+
+class SimpleHarmonicOscillator2DSampler(Grid2D):
+    """
+    Class that generates parameters for the 2D simple harmonic oscillator.
+    """
+
+    def sample_params(self, min_kx=0, max_kx=0.16, min_ky=0, max_ky=0.16, min_cx=-8, max_cx=8, min_cy=-8, max_cy=8):
+        """
+        Random parameter method that generates parameters for simple harmonic oscillator potentials.
 
         Args:
-            **min_kx (float)**: The minimum possible value for the well
-                width along the x axis. Default is 0.
-            **max_kx (float)**: The maximum possible value for the well
-                width along the x axis. Default is 0.16.
-            **min_ky (float)**: The minimum possible value for the well
-                width along the y axis. Default is 0.
-            **max_ky (float)**: The maximum possible value for the well
-                width along the y axis. Default is 0.16.
-            **min_cx (float)**: The minimum possible value for the center 
-                (in a.u.) of the simple harmonic oscillator along the x 
-                axis. Default is -8.
-            **max_cx (float)**: The maximum possible value for the center 
-                (in a.u.) of the simple harmonic oscillator along the x 
-                axis. Default is 8.
-            **min_cy (float)**: The minimum possible value for the center 
-                (in a.u.) of the simple harmonic oscillator along the y 
-                axis. Default is -8.
-            **max_cy (float)**: The maximum possible value for the center 
-                (in a.u.) of the simple harmonic oscillator along the y 
-                axis. Default is 8.
+            **min_kx (float)**: The minimum possible value for the well width along the x axis. Default is 0.
+            **max_kx (float)**: The maximum possible value for the well width along the x axis. Default is 0.16.
+            **min_ky (float)**: The minimum possible value for the well width along the y axis. Default is 0.
+            **max_ky (float)**: The maximum possible value for the well width along the y axis. Default is 0.16.
+            **min_cx (float)**: The minimum possible value for the center (in a.u.) of the simple harmonic oscillator
+                along the x axis. Default is -8.
+            **max_cx (float)**: The maximum possible value for the center (in a.u.) of the simple harmonic oscillator
+                along the x axis. Default is 8.
+            **min_cy (float)**: The minimum possible value for the center (in a.u.) of the simple harmonic oscillator
+                along the y axis. Default is -8.
+            **max_cy (float)**: The maximum possible value for the center (in a.u.) of the simple harmonic oscillator
+                along the y axis. Default is 8.
 
         Returns:
-            A dictionary of randomly generated simple harmonic oscillator
-            parameters.
+            A dictionary of randomly generated simple harmonic oscillator parameters.
         """
 
         assert min_kx <= max_kx
@@ -251,75 +155,65 @@ class ParamSampler2D:
         k_y = np.random.uniform(low=min_ky, high=max_ky)
         c_x = np.random.uniform(low=min_cx, high=max_cx)
         c_y = np.random.uniform(low=min_cy, high=max_cy)
-        
-        return {'k_x': k_x, 'k_y': k_y, 'c_x': c_x, 'c_y': c_y}
 
-    def dig(self, min_a1=2, max_a1=4, min_a2=2, max_a2=4, 
-            min_cx1=-8, max_cx1=8, min_cy1=-8, max_cy1=8,
-            min_cx2=-8, max_cx2=8, min_cy2=-8, max_cy2=8,
-            min_kx1=1.6, max_kx1=8, min_ky1=1.6, max_ky1=8,
-            min_kx2=1.6, max_kx2=8, min_ky2=1.6, max_ky2=8):
+        return dict(k_x=k_x, k_y=k_y, c_x=c_x, c_y=c_y)
+
+
+class DoubleInvertedGaussian2DSampler(Grid2D):
+    """
+    Class that generates parameters for the 2D double inverted Gaussian.
+    """
+
+    def sample_params(self, min_a1=2, max_a1=4, min_a2=2, max_a2=4, min_cx1=-8, max_cx1=8, min_cy1=-8, max_cy1=8,
+                      min_cx2=-8, max_cx2=8, min_cy2=-8, max_cy2=8, min_kx1=1.6, max_kx1=8, min_ky1=1.6, max_ky1=8,
+                      min_kx2=1.6, max_kx2=8, min_ky2=1.6, max_ky2=8):
         """
-        Random parameter method that generates parameters for double
-        inverted Gaussian potentials.
+        Random parameter method that generates parameters for double inverted Gaussian potentials.
 
         Args:
-            **min_a1 (float)**: The minimum possible value of the amplitude of
-                the first Gaussian. Default is 2. Units are in Hartree
-                energy.
-            **max_a1 (float)**: The maximum possible value of the amplitude of
-                the first Gaussian. Default is 4. Units are in Hartree
-                energy.
-            **min_a2 (float)**: The minimum possible value of the amplitude of
-                the second Gaussian. Default is 2. Units are in Hartree
-                energy.
-            **max_a2 (float)**: The maximum possible value of the amplitude of
-                the second Gaussian. Default is 4. Units are in Hartree
-                energy.
-            **min_cx1 (float)**: The minimum possible position of the center 
-                along the x axis of the first Gaussian. Default is -8 a.u.
-            **max_cx1 (float)**: The maximum possible position of the center 
-                along the x axis of the first Gaussian. Default is 8 a.u.
-            **min_cy1 (float)**: The minimum possible position of the center 
-                along the y axis of the first Gaussian. Default is -8 a.u.
-            **max_cy1 (float)**: The maximum possible position of the center 
-                along the y axis of the first Gaussian. Default is 8 a.u.
-            **min_cx2 (float)**: The minimum possible position of the center 
-                along the x axis of the second Gaussian. Default is -8 a.u.
-            **max_cx2 (float)**: The maximum possible position of the center 
-                along the x axis of the second Gaussian. Default is 8 a.u.
-            **min_cy2 (float)**: The minimum possible position of the center 
-                along the y axis of the second Gaussian. Default is -8 a.u.
-            **max_cy2 (float)**: The maximum possible position of the center 
-                along the y axis of the second Gaussian. Default is 8 a.u.
-            **min_kx1 (float)**: The minimum possible value for the constant
-                that determines the width along the x axis of the first 
-                Gaussian. Default is 1.6.
-            **max_kx1 (float)**: The maximum possible value for the constant
-                that determines the width along the x axis of the first 
-                Gaussian. Default is 8.
-            **min_ky1 (float)**: The minimum possible value for the constant
-                that determines the width along the y axis of the first 
-                Gaussian. Default is 1.6.
-            **max_ky1 (float)**: The maximum possible value for the constant
-                that determines the width along the y axis of the first 
-                Gaussian. Default is 8.
-            **min_kx2 (float)**: The minimum possible value for the constant
-                that determines the width along the x axis of the second 
-                Gaussian. Default is 1.6.
-            **max_kx2 (float)**: The maximum possible value for the constant
-                that determines the width along the x axis of the second 
-                Gaussian. Default is 8.
-            **min_ky2 (float)**: The minimum possible value for the constant
-                that determines the width along the y axis of the second 
-                Gaussian. Default is 1.6.
-            **max_ky2 (float)**: The maximum possible value for the constant
-                that determines the width along the y axis of the second 
-                Gaussian. Default is 8.
+            **min_a1 (float)**: The minimum possible value of the amplitude of the first Gaussian. Default is 2. Units
+                are in Hartree energy.
+            **max_a1 (float)**: The maximum possible value of the amplitude of the first Gaussian. Default is 4. Units
+                are in Hartree energy.
+            **min_a2 (float)**: The minimum possible value of the amplitude of the second Gaussian. Default is 2. Units
+                are in Hartree energy.
+            **max_a2 (float)**: The maximum possible value of the amplitude of the second Gaussian. Default is 4. Units
+                are in Hartree energy.
+            **min_cx1 (float)**: The minimum possible position of the center along the x axis of the first Gaussian.
+                Default is -8 a.u.
+            **max_cx1 (float)**: The maximum possible position of the center along the x axis of the first Gaussian.
+                Default is 8 a.u.
+            **min_cy1 (float)**: The minimum possible position of the center along the y axis of the first Gaussian.
+                Default is -8 a.u.
+            **max_cy1 (float)**: The maximum possible position of the center along the y axis of the first Gaussian.
+                Default is 8 a.u.
+            **min_cx2 (float)**: The minimum possible position of the center along the x axis of the second Gaussian.
+                Default is -8 a.u.
+            **max_cx2 (float)**: The maximum possible position of the center along the x axis of the second Gaussian.
+                Default is 8 a.u.
+            **min_cy2 (float)**: The minimum possible position of the center along the y axis of the second Gaussian.
+                Default is -8 a.u.
+            **max_cy2 (float)**: The maximum possible position of the center along the y axis of the second Gaussian.
+                Default is 8 a.u.
+            **min_kx1 (float)**: The minimum possible value for the constant that determines the width along the x axis
+                of the first Gaussian. Default is 1.6.
+            **max_kx1 (float)**: The maximum possible value for the constant that determines the width along the x axis
+                of the first Gaussian. Default is 8.
+            **min_ky1 (float)**: The minimum possible value for the constant that determines the width along the y axis
+                of the first Gaussian. Default is 1.6.
+            **max_ky1 (float)**: The maximum possible value for the constant that determines the width along the y axis
+                of the first Gaussian. Default is 8.
+            **min_kx2 (float)**: The minimum possible value for the constant that determines the width along the x axis
+                of the second Gaussian. Default is 1.6.
+            **max_kx2 (float)**: The maximum possible value for the constant that determines the width along the x axis
+                of the second Gaussian. Default is 8.
+            **min_ky2 (float)**: The minimum possible value for the constant that determines the width along the y axis
+                of the second Gaussian. Default is 1.6.
+            **max_ky2 (float)**: The maximum possible value for the constant that determines the width along the y axis
+                of the second Gaussian. Default is 8.
 
         Returns:
-            A dictionary of randomly generated double inverted Gaussian
-            parameters.
+            A dictionary of randomly generated double inverted Gaussian parameters.
         """
 
         assert min_a1 > 0
@@ -356,38 +250,36 @@ class ParamSampler2D:
         k_y1 = np.random.uniform(low=min_ky1, high=max_ky1)
         k_x2 = np.random.uniform(low=min_kx2, high=max_kx2)
         k_y2 = np.random.uniform(low=min_ky2, high=max_ky2)
-        
-        return {'a1': a1, 'a2': a2, 'c_x1': c_x1, 'c_y1': c_y1,
-                'c_x2': c_x2, 'c_y2': c_y2, 'k_x1': k_x1, 'k_y1': k_y1,
-                'k_x2': k_x2, 'k_y2': k_y2}
-    
-    def rand(self, min_k=2, max_k=7, min_r=80, max_r=180, 
-             min_sig1=6, max_sig1=10, min_sig2=10, max_sig2=16, 
-             p_range=[0.5, 1.0, 1.5, 2.0]):
+
+        return dict(a1=a1, a2=a2, c_x1=c_x1, c_y1=c_y1, c_x2=c_x2, c_y2=c_y2, k_x1=k_x1, k_y1=k_y1, k_x2=k_x2,
+                    k_y2=k_y2)
+
+
+class Random2DSampler(Grid2D):
+    """
+    Class that generates parameters for a random 2D potential.
+    """
+
+    def sample_params(self, min_k=2, max_k=7, min_r=80, max_r=180, min_sig1=6, max_sig1=10, min_sig2=10, max_sig2=16,
+                      p_range=[0.5, 1.0, 1.5, 2.0]):
         """
-        Random parameter method that generates parameters for random 
-        potentials.
-        
+        Random parameter method that generates parameters for random potentials.
+
         Args:
-            **min_k (int)**: Determines the low end of the number of points
-                used to create the convex hull. Default is 2.
-            **max_k (int)**: Determines the high end of the number of points
-                used to create the convex hull. Default is 7.
-            **min_r (float)**: The minimum possible resolution size of the
-                random blob. Default is 80 pixels (scaled for 256 x 256).
-            **max_r (float)**: The maximum possible resolution size of the
-                random blob. Default is 180 pixels (scaled for 256 x 256).
-            **min_sig1 (float)**: The minimum possible variance of the first
-                Gaussian blur. Default is 6.
-            **max_sig1 (float)**: The maximum possible variance of the first
-                Gaussian blur. Default is 10.
-            **min_sig2 (float)**: The minimum possible variance of the second
-                Gaussian blur. Default is 10.
-            **max_sig2 (float)**: The maximum possible variance of the second
-                Gaussian blur. Default is 16.
-            **p_range (list)**: The range of exponents to sample from when
-                exponentiating the potential for contrasting. Default is
-                [1, 2].
+            **min_k (int)**: Determines the low end of the number of points used to create the convex hull. Default is
+                2.
+            **max_k (int)**: Determines the high end of the number of points used to create the convex hull. Default is
+                7.
+            **min_r (float)**: The minimum possible resolution size of the random blob. Default is 80 pixels (scaled
+                for 256 x 256).
+            **max_r (float)**: The maximum possible resolution size of the random blob. Default is 180 pixels (scaled
+                for 256 x 256).
+            **min_sig1 (float)**: The minimum possible variance of the first Gaussian blur. Default is 6.
+            **max_sig1 (float)**: The maximum possible variance of the first Gaussian blur. Default is 10.
+            **min_sig2 (float)**: The minimum possible variance of the second Gaussian blur. Default is 10.
+            **max_sig2 (float)**: The maximum possible variance of the second Gaussian blur. Default is 16.
+            **p_range (list)**: The range of exponents to sample from when exponentiating the potential for contrasting.
+                Default is [1, 2].
 
         Returns:
             A dictionary of randomly generated random potential parameters.
@@ -415,17 +307,30 @@ class ParamSampler2D:
         sig1 = np.random.uniform(low=min_sig1, high=max_sig1)
         sig2 = np.random.uniform(low=min_sig2, high=max_sig2)
         p = np.random.choice(p_range)
-        
-        return {'k': k, 'r': r, 'sig1': sig1, 'sig2': sig2, 'p': p}
-    
-    def coulomb(self, min_z=1, max_z=118):
+
+        return dict(k=k, r=r, sig1=sig1, sig2=sig2, p=p)
+
+
+class Coulomb2DSampler(Grid2D):
+    """
+    Class that generates parameters for the 2D Coulomb potential.
+    """
+
+    def sample_params(self, min_z=1, max_z=118, min_cx=-8, max_cx=8, min_cy=-8, max_cy=8, alpha=10**-9):
         """
-        Random parameter method that generates parameters for Coulomb 
-        potentials.
-        
+        Random parameter method that generates parameters for Coulomb potentials.
+
         Args:
             **min_z (int)**: The minimum number of allowable protons.
             **max_z (int)**: The maximum number of allowable protons.
+            **min_cx (float)**: The minimum possible value for the center (in a.u.) of the Coulomb potential along the x
+                axis. Default is -8.
+            **max_cx (float)**: The maximum possible value for the center (in a.u.) of the Coulomb potential along the x
+                axis. Default is 8.
+            **min_cy (float)**: The minimum possible value for the center (in a.u.) of the Coulomb potential along the y
+                axis. Default is -8.
+            **max_cy (float)**: The maximum possible value for the center (in a.u.) of the Coulomb potential along the y
+                axis. Default is 8.
 
         Returns:
             A dictionary of randomly generated Coulomb potential parameters.
@@ -436,5 +341,8 @@ class ParamSampler2D:
 
         # Sample parameters
         z = np.random.randint(low=min_z, high=max_z)
-        
-        return {'z': z}
+        c_x = np.random.uniform(low=min_cx, high=max_cx)
+        c_y = np.random.uniform(low=min_cy, high=max_cy)
+        alpha = alpha
+
+        return dict(z=z, c_x=c_x, c_y=c_y, alpha=alpha)

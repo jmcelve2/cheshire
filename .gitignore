@@ -1,4 +1,12 @@
-.idea/
+# File types
 *.csv
 *.png
 *.h5
+
+# IntelliJ idea
+*.idea
+*.iml
+
+# Python specific files
+*.pyc
+*.cache
