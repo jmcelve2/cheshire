@@ -10,3 +10,4 @@ dependencies:
 - setuptools
 - pip:
   - sklearn=0.0
+  - pytest=3.2.1

@@ -1,3 +1,5 @@
-from cheshire import Schrodinger
-from cheshire import Potential
-from cheshire import ParamSampler
+
+from cheshire.Grid import *
+from cheshire.Kinetic import *
+from cheshire.Potential import *
+from cheshire.ParamSampler import *

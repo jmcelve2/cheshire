@@ -30,7 +30,9 @@ documentation_packages = [
 regular_packages = [
     'numpy',
     'scipy',
-    'setuptools'
+    'setuptools',
+    'sklearn==0.0',
+    'pytest==3.2.1'
 ]
 testing_packages = ["coverage==4.4.1"]
 
