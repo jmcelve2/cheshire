@@ -5,26 +5,33 @@ class Grid1D(object):
     """
     The physical grid for 1D Potentials.
 
-        Attributes:
-        **n_x (int)**: The number of grid points along the x axis. This number must be a multiple of 2.
-        **n_e (int)**: The number of electrons on the grid.
-        **x_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the x axis.
-        **x_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the x axis.
-        **x (numpy.array)**: A grid of distances (in a.u.) from the center of the grid along the x axis.
+        **Attributes:**
+            **n_x (int)**: The number of grid points along the x axis. This number must be a multiple of 2.
+
+            **n_e (int)**: The number of electrons on the grid.
+
+            **x_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the x axis.
+
+            **x_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the x axis.
+
+            **x (numpy.array)**: A grid of distances (in a.u.) from the center of the grid along the x axis.
     """
 
     def __init__(self, n_x=128, n_e=2, x_min=-20, x_max=20):
         """
         Grid1D constructor.
 
-        Args:
+        **Args:**
             **n_x (int)**: The number of grid points along the x axis. This number must be a multiple of 2. Default is
-                128.
+            128.
+
             **n_e (int)**: The number of electrons on the grid.
+
             **x_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the x axis. Default
-                is -20.
+            is -20.
+
             **x_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the x axis. Default
-                is 20.
+            is 20.
         """
 
         if not ((n_x & (n_x - 1)) == 0) and n_x != 0:
@@ -56,34 +63,48 @@ class Grid2D(object):
     """
     The physical grid for 2D Potentials.
 
-    Attributes:
-        **n_x (int)**: The number of grid points along the x axis. This number must be a multiple of 2.
-        **n_y (int)**: The number of grid points along the y axis. This number must be a multiple of 2.
-        **n_e (int)**: The number of electrons on the grid.
-        **x_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the x axis.
-        **x_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the x axis.
-        **y_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the y axis.
-        **y_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the y axis.
-        **x (numpy.array)**: A grid of distances (in a.u.) from the center of the grid along the x axis.
-        **y (numpy.array)**: A grid of distances (in a.u.) from the center of the grid along the y axis.
+        **Attributes:**
+            **n_x (int)**: The number of grid points along the x axis. This number must be a multiple of 2.
+
+            **n_y (int)**: The number of grid points along the y axis. This number must be a multiple of 2.
+
+            **n_e (int)**: The number of electrons on the grid.
+
+            **x_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the x axis.
+
+            **x_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the x axis.
+
+            **y_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the y axis.
+
+            **y_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the y axis.
+
+            **x (numpy.array)**: A grid of distances (in a.u.) from the center of the grid along the x axis.
+
+            **y (numpy.array)**: A grid of distances (in a.u.) from the center of the grid along the y axis.
     """
 
     def __init__(self, n_x=128, n_y=128, n_e=1, x_min=-20, x_max=20, y_min=-20, y_max=20):
         """
         Grid2D constructor.
 
-        Args:
+        **Args:**
             **n_x (int)**: The number of grid points along the x axis. This number must be a multiple of 2. Default is
-                128.
+            128.
+
             **n_y (int)**: The number of grid points along the y axis. This number must be a multiple of 2. Default is
-                128.
+            128.
+
             **n_e (int)**: The number of electrons on the grid.
+
             **x_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the x axis. Default
-                is -20.
+            is -20.
+
             **x_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the x axis. Default
-                is 20.
+            is 20.
+
             **y_min (float)**: The minimum physical distance (in a.u.) on the potential grid along the y axis. Default
-                is -20.
+            is -20.
+
             **y_max (float)**: The maximum physical distance (in a.u.) on the potential grid along the y axis. Default
                 is 20.
         """

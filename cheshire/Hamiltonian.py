@@ -18,8 +18,8 @@ class Hamiltonian(object):
     equation using finite element analysis. The particular solver function implemented depends on the parameters passed
     into the constructor.
 
-    Attributes:
-        **potential (Potential)**: An object of class Potential containing an array of potential energy values and
+        **Attributes:**
+            **potential (Potential)**: An object of class Potential containing an array of potential energy values and
             distance information.
     """
 
@@ -27,9 +27,10 @@ class Hamiltonian(object):
         """
         Numerically solve the Schrodinger equation.
 
-        Args:
-            **grid_params (dict)**: Parameters specifying the form of the grid and the number of electrons.
-            **pot_params (dict)**: Parameters specifying the form of the potential.
+            **Args:**
+                **grid_params (dict)**: Parameters specifying the form of the grid and the number of electrons.
+
+                **pot_params (dict)**: Parameters specifying the form of the potential.
         """
         assert isinstance(grid_params, dict)
         assert isinstance(pot_params, dict)
@@ -62,6 +63,13 @@ class Hamiltonian(object):
     def solve(self, k=1):
         """
         Solver method which conditionally implements Schrodinger solvers based on the dimensionality of the problem.
+
+            **Args:**
+                **k (int)**: The order of the solution to calculate the energy and wavefunction for.
+
+            **Returns:**
+                The energy and a numpy array representation of the wavefunction with the amplitude for each position on
+                the grid.
         """
         potential = np.diag(self.potential.potential.flatten())*CHARGE_E
         kinetic = self.kinetic.kinetic

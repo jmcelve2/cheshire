@@ -17,8 +17,8 @@ class Potential(object):
         """
         A potential object containing information about the potential.
 
-        Args:
-            **params (dict)**: A dictionary of values specifying the type of potential to create.
+            **Args:**
+                **params (dict):** A dictionary of values specifying the type of potential to create.
         """
         if not "potential" in params.keys():
             raise AssertionError("The params dictionary must contain a potential grid.")
@@ -37,13 +37,14 @@ class InfiniteWell1D(Grid1D):
         """
         Generate a Potential object with a 1D infinite well potential.
 
-        Args:
-            **c_x (float)**: The center of the infinite well along the x axis (in a.u.). Default is 0.
-            **l_x (float)**: The length of the infinite well along the x axis (in a.u.). Default is 7.
+            **Args:**
+                **c_x (float):** The center of the infinite well along the x axis (in a.u.). Default is 0.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **l_x (float):** The length of the infinite well along the x axis (in a.u.). Default is 7.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
 
         assert self.x_min < c_x-0.5*l_x
@@ -64,17 +65,20 @@ class Coulomb1D(Grid1D):
     One dimensional Coulomb potential.
     """
 
-    def create(self, c_x=0, z=1):
+    def create(self, c_x=0, z=1, alpha=10**-9):
         """
         Generate a Potential object with a 1D Coulomb potential.
 
-        Args:
-            **c_x (float)**: The center of the Coulomb potential along the x axis (in a.u.). Default is 0.
-            **z (int)**: The number of protons determining the strength of the Coulomb attraction. Default is 1.
+            **Args:**
+                **c_x (float):** The center of the Coulomb potential along the x axis (in a.u.). Default is 0.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **z (int):** The number of protons determining the strength of the Coulomb attraction. Default is 1.
+
+                **alpha (float):** A value that removes the Coulomb singularity to ensure the solver converges.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
         assert isinstance(z, int)
         assert z >= 1
@@ -97,15 +101,18 @@ class InfiniteWell2D(Grid2D):
         """
         Generate a Potential object with a 2D infinite well potential.
 
-        Args:
-            **c_x (float)**: The center of the infinite well along the x axis (in a.u.). Default is 0.
-            **c_y (float)**: The center of the infinite well along the y axis (in a.u.). Default is 0.
-            **l_x (float)**: The length of the infinite well along the x axis (in a.u.). Default is 7.
-            **l_y (float)**: The length of the infinite well along the y axis (in a.u.). Default is 7.
+            **Args:**
+                **c_x (float):** The center of the infinite well along the x axis (in a.u.). Default is 0.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **c_y (float):** The center of the infinite well along the y axis (in a.u.). Default is 0.
+
+                **l_x (float):** The length of the infinite well along the x axis (in a.u.). Default is 7.
+
+                **l_y (float):** The length of the infinite well along the y axis (in a.u.). Default is 7.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
 
         assert (c_x > self.x_min) & (c_x < self.x_max)
@@ -133,17 +140,20 @@ class SimpleHarmonicOscillator2D(Grid2D):
         """
         Generate a Potential object with a 2D simple harmonic oscillator potential.
 
-        Args:
-            **c_x (float)**: The center of the simple harmonic oscillator along the x axis (in a.u.). Default is 0.
-            **c_y (float)**: The center of the simple harmonic oscillator along the y axis (in a.u.). Default is 0.
-            **k_x (float)**: The constant that determines the width of the harmonic oscillator potential along the x
-                axis. Default is 2.
-            **k_y (float)**: The constant that determines the width of the harmonic oscillator potential along the y
+            **Args:**
+                **c_x (float):** The center of the simple harmonic oscillator along the x axis (in a.u.). Default is 0.
+
+                **c_y (float):** The center of the simple harmonic oscillator along the y axis (in a.u.). Default is 0.
+
+                **k_x (float):** The constant that determines the width of the harmonic oscillator potential along the x
                 axis. Default is 2.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **k_y (float):** The constant that determines the width of the harmonic oscillator potential along the y
+                axis. Default is 2.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
         assert (c_x > self.x_min) & (c_x < self.x_max)
         assert (c_y > self.y_min) & (c_y < self.y_max)
@@ -167,25 +177,34 @@ class DoubleInvertedGaussian2D(Grid2D):
         """
         Generate a Potential object with a 2D double inverted Gaussian potential.
 
-        Args:
-            **a1 (float)**: The maximum depth of the first Gaussian in units of Hartree Energy. Default is 2.
-            **a2 (float)**: The maximum depth of the first Gaussian in units of Hartree Energy. Default is 2.
-            **c_x1 (float)**: The center of the first Gaussian well along the x axis (in a.u.). Default is -2.
-            **c_y1 (float)**: The center of the first Gaussian well along the y axis (in a.u.). Default is 2.
-            **c_x2 (float)**: The center of the second Gaussian well along the x axis (in a.u.). Default is -2.
-            **c_y2 (float)**: The center of the second Gaussian well along the y axis (in a.u.). Default is 2.
-            **k_x1 (float)**: The constant that determines the width of the first inverted Gaussian along the x axis.
-                Default is 2.
-            **k_x2 (float)**: The constant that determines the width of the second inverted Gaussian along the x axis.
-                Default is 2.
-            **k_y1 (float)**: The constant that determines the width of the first inverted Gaussian along the y axis.
-                Default is 2.
-            **k_y2 (float)**: The constant that determines the width of the second inverted Gaussian along the y axis.
+            **Args:**
+                **a1 (float):** The maximum depth of the first Gaussian in units of Hartree Energy. Default is 2.
+
+                **a2 (float):** The maximum depth of the first Gaussian in units of Hartree Energy. Default is 2.
+
+                **c_x1 (float):** The center of the first Gaussian well along the x axis (in a.u.). Default is -2.
+
+                **c_y1 (float):** The center of the first Gaussian well along the y axis (in a.u.). Default is 2.
+
+                **c_x2 (float):** The center of the second Gaussian well along the x axis (in a.u.). Default is -2.
+
+                **c_y2 (float):** The center of the second Gaussian well along the y axis (in a.u.). Default is 2.
+
+                **k_x1 (float):** The constant that determines the width of the first inverted Gaussian along the x axis.
                 Default is 2.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **k_x2 (float):** The constant that determines the width of the second inverted Gaussian along the x axis.
+                Default is 2.
+
+                **k_y1 (float):** The constant that determines the width of the first inverted Gaussian along the y axis.
+                Default is 2.
+
+                **k_y2 (float):** The constant that determines the width of the second inverted Gaussian along the y axis.
+                Default is 2.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
 
         assert a1 > 0
@@ -235,16 +254,20 @@ class Random2D(Grid2D):
         """
         Generate a Potential object with a 2D random potential.
 
-        Args:
-            **k (int)**: Determines the number of integers (k**2) to use to generate the convex hull that makes the blob.
-            **r (float)**: The resolution size of the blob.
-            **sig1 (float)**: The variance of the first Gaussian blur.
-            **sig2 (float)**: The variance of the second Gaussian blur.
-            **p (float)**: The exponent used to increase the contrast of the potential.
+            **Args:**
+                **k (int):** Determines the number of integers (k**2) to use to generate the convex hull that makes the blob.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **r (float):** The resolution size of the blob.
+
+                **sig1 (float):** The variance of the first Gaussian blur.
+
+                **sig2 (float):** The variance of the second Gaussian blur.
+
+                **p (float):** The exponent used to increase the contrast of the potential.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
         assert (k >= 2) & (k <= 7)
         assert (self.rescale_by_grid(r) < self.n_x) & (r > 0)
@@ -328,15 +351,18 @@ class Coulomb2D(Grid2D):
         """
         Generate a Potential object with a 2D Coulomb potential.
 
-        Args:
-            **z (int)**: Determines the magnitude of the potential. An effective "proton number" constant.
-            **c_x (float)**: The center of the Coulomb potential along the x axis (in a.u.). Default is 0.
-            **c_y (float)**: The center of the Coulomb potential along the y axis (in a.u.). Default is 0.
-            **alpha (float)**: A value that removes the Coulomb singularity to ensure the solver converges.
+            **Args:**
+                **z (int):** Determines the magnitude of the potential. An effective "proton number" constant.
 
-        Returns:
-            An object of class Potential with a potential attribute and attributes corresponding to the parameters used
-            to generate the potential.
+                **c_x (float):** The center of the Coulomb potential along the x axis (in a.u.). Default is 0.
+
+                **c_y (float):** The center of the Coulomb potential along the y axis (in a.u.). Default is 0.
+
+                **alpha (float):** A value that removes the Coulomb singularity to ensure the solver converges.
+
+            **Returns:**
+                An object of class Potential with a potential attribute and attributes corresponding to the parameters used
+                to generate the potential.
         """
 
         assert isinstance(z, int)

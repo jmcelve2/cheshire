@@ -11,18 +11,18 @@ MASS = 1
 class Kinetic(object):
     """
     A kinetic object containing information about the kinetic energy.
-    Attributes:
-        **kinetic (numpy.array)**: A grid of values corresponding to the
-            kinetic energy.
+
+    **Attributes:**
+        **kinetic (numpy.array):** A grid of values corresponding to the kinetic energy.
     """
 
     def __init__(self, params):
         """
         A kinetic object containing information about the kinetic energy
         operator.
-        Args:
-            **params (dict)**: A dictionary of values specifying the type
-                of kinetic energy operator to create.
+
+            **Args:**
+                **params (dict):** A dictionary of values specifying the type of kinetic energy operator to create.
         """
         if "kinetic" not in params.keys():
             raise AssertionError("The params dictionary must contain a kinetic grid.")
@@ -41,15 +41,14 @@ class Kinetic1D(Grid1D):
         """
         Add the "kinetic" attribute to the Kinetic1D object.
 
-        Args:
-            **c_x (float)**: The center of the infinite well along the x
-                axis (in a.u.). Default is 0.
-            **l_x (float)**: The length of the infinite well along the x
-                axis (in a.u.). Default is 7.
+            **Args:**
+                **c_x (float)**: The center of the infinite well along the x axis (in a.u.). Default is 0.
 
-        Returns:
-            A numpy.array grid of potential values with units of Hartree
-            energy.
+                **l_x (float)**: The length of the infinite well along the x axis (in a.u.). Default is 7.
+
+            **Returns:**
+                A numpy.array grid of potential values with units of Hartree
+                energy.
         """
         d = abs(self.x[1]-self.x[0])
 
@@ -74,9 +73,9 @@ class Kinetic2D(Grid2D):
         """
         Add the "kinetic" attribute to the Kinetic2D object.
 
-        Returns:
-            A numpy.array grid of kinetic values with units of Hartree
-            energy.
+            **Returns:**
+                A numpy.array grid of kinetic values with units of Hartree
+                energy.
         """
         d = abs(self.x[0][1]-self.x[0][0])
 

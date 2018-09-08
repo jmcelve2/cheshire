@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # cheshire documentation build configuration file, created by
-# sphinx-quickstart on Sat Sep  1 13:31:01 2018.
+# sphinx-quickstart on Sat Sep  1 14:53:59 2018.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -32,9 +32,7 @@
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax']
+    'sphinx.ext.doctest']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
